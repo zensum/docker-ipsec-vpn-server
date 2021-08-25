@@ -2,13 +2,15 @@ version: '3'
 
 services:
   vpn:
-    image: hwdsl2/ipsec-vpn-server
+    build:
+      dockerfile: Dockerfile
     restart: always
     env_file:
-      - ./vpn.env
+      - .env
+    # does ports really do something for priviliged?
     ports:
       - "500:500/udp"
       - "4500:4500/udp"
     privileged: true
-    hostname: ipsec-vpn-server
-    container_name: ipsec-vpn-server
+    volumes:
+      - ./.ikev2-vpn-data:/etc/ipsec.d
